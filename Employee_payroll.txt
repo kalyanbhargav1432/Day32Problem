@@ -1,0 +1,288 @@
+mysql> create database employee_payroll;
+Query OK, 1 row affected (1.66 sec)
+mysql> show databases;
++---------------------+
+| Database            |
++---------------------+
+| addressbook_service |
+| employee_payroll    |
+| information_schema  |
+| mysql               |
+| performance_schema  |
+| sakila              |
+| sys                 |
+| world               |
++---------------------+
+8 rows in set (0.72 sec)
+
+mysql> use employee_payroll
+Database changed
+mysql> create table employee_payroll(id int unsigned not null auto_increment,name varchar(200) not null,salary double not null,strat date not null,primary key(id));
+Query OK, 0 rows affected (7.71 sec)
+
+mysql> use employee_payroll;
+Database changed
+mysql> select database();
++------------------+
+| database()       |
++------------------+
+| employee_payroll |
++------------------+
+1 row in set (0.00 sec)
+
+mysql> describe employee_payroll;
++--------+--------------+------+-----+---------+----------------+
+| Field  | Type         | Null | Key | Default | Extra          |
++--------+--------------+------+-----+---------+----------------+
+| id     | int unsigned | NO   | PRI | NULL    | auto_increment |
+| name   | varchar(200) | NO   |     | NULL    |                |
+| salary | double       | NO   |     | NULL    |                |
+| strat  | date         | NO   |     | NULL    |                |
++--------+--------------+------+-----+---------+----------------+
+4 rows in set (0.30 sec)
+
+mysql> alter table employee_payroll change column strat start date not null;
+Query OK, 0 rows affected (0.52 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> insert into employee_payroll(name,salary,start) values('simran','40000.00','2002-01-12'),('kalyan','34000.00','1997-07-19'),('bhargav','64000.00','2007-07-19');
+Query OK, 3 rows affected (0.30 sec)
+Records: 3  Duplicates: 0  Warnings: 0
+
+mysql> select * from employee_payroll;
++----+---------+--------+------------+
+| id | name    | salary | start      |
++----+---------+--------+------------+
+|  1 | simran  |  40000 | 2002-01-12 |
+|  2 | kalyan  |  34000 | 1997-07-19 |
+|  3 | bhargav |  64000 | 2007-07-19 |
++----+---------+--------+------------+
+3 rows in set (0.00 sec)
+
+mysql> select salary from employee_payroll where start between cast('2002-01-12'as date) and date(now());
++--------+
+| salary |
++--------+
+|  40000 |
+|  64000 |
++--------+
+2 rows in set (0.06 sec)
+
+mysql> alter table employee_payroll add gender char(1) after name;
+Query OK, 0 rows affected (2.18 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> select * from employee_payroll;
++----+---------+--------+--------+------------+
+| id | name    | gender | salary | start      |
++----+---------+--------+--------+------------+
+|  1 | simran  | NULL   |  40000 | 2002-01-12 |
+|  2 | kalyan  | NULL   |  34000 | 1997-07-19 |
+|  3 | bhargav | NULL   |  64000 | 2007-07-19 |
++----+---------+--------+--------+------------+
+3 rows in set (0.00 sec)
+
+mysql> update employee_payroll set gender ='M' where name='simran' or name = 'bhargav';
+Query OK, 2 rows affected (0.14 sec)
+Rows matched: 2  Changed: 2  Warnings: 0
+
+mysql> select * from employee_payroll;
++----+---------+--------+--------+------------+
+| id | name    | gender | salary | start      |
++----+---------+--------+--------+------------+
+|  1 | simran  | M      |  40000 | 2002-01-12 |
+|  2 | kalyan  | NULL   |  34000 | 1997-07-19 |
+|  3 | bhargav | M      |  64000 | 2007-07-19 |
++----+---------+--------+--------+------------+
+3 rows in set (0.00 sec)
+
+mysql> update employee_payroll set gender ='F' where name='simran' or name = 'bhargav';
+Query OK, 2 rows affected (0.10 sec)
+Rows matched: 2  Changed: 2  Warnings: 0
+
+mysql> select * from employee_payroll;
++----+---------+--------+--------+------------+
+| id | name    | gender | salary | start      |
++----+---------+--------+--------+------------+
+|  1 | simran  | F      |  40000 | 2002-01-12 |
+|  2 | kalyan  | NULL   |  34000 | 1997-07-19 |
+|  3 | bhargav | F      |  64000 | 2007-07-19 |
++----+---------+--------+--------+------------+
+3 rows in set (0.00 sec)
+
+Query OK, 2 rows affected (0.10 sec)
+Rows matched: 2  Changed: 2  Warnings: 0
+
+mysql> select * from employee_payroll;
++----+---------+--------+--------+------------+
+| id | name    | gender | salary | start      |
++----+---------+--------+--------+------------+
+|  1 | simran  | F      |  40000 | 2002-01-12 |
+|  2 | kalyan  | M      |  34000 | 1997-07-19 |
+|  3 | bhargav | M      |  64000 | 2007-07-19 |
++----+---------+--------+--------+------------+
+3 rows in set (0.00 sec)
+
+mysql> select sum(salary) from employee_payroll;
++-------------+
+| sum(salary) |
++-------------+
+|      138000 |
++-------------+
+1 row in set (0.02 sec)
+
+mysql> select min(salary) from employee_payroll;
++-------------+
+| min(salary) |
++-------------+
+|       34000 |
++-------------+
+1 row in set (0.03 sec)
+
+mysql> select max(salary) from employee_payroll;
++-------------+
+| max(salary) |
++-------------+
+|       64000 |
++-------------+
+1 row in set (0.00 sec)
+
+mysql> select avg(salary) from employee_payroll;
++-------------+
+| avg(salary) |
++-------------+
+|       46000 |
++-------------+
+1 row in set (0.00 sec)
+
+mysql> select count(salary) from employee_payroll;
++---------------+
+| count(salary) |
++---------------+
+|             3 |
++---------------+
+1 row in set (0.05 sec)
+
+mysql> select * from employee_payroll;
++----+---------+--------+--------+------------+
+| id | name    | gender | salary | start      |
++----+---------+--------+--------+------------+
+|  1 | simran  | F      |  40000 | 2002-01-12 |
+|  2 | kalyan  | M      |  34000 | 1997-07-19 |
+|  3 | bhargav | M      |  64000 | 2007-07-19 |
++----+---------+--------+--------+------------+
+3 rows in set (0.00 sec)
+
+mysql> alter table employee_payroll add department varchar(150) not null after salary;
+Query OK, 0 rows affected (1.55 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> alter table employee_payroll add Address varchar(150) not null after department;
+Query OK, 0 rows affected (1.46 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> select * from employee_payroll;
++----+---------+--------+--------+------------+---------+------------+
+| id | name    | gender | salary | department | Address | start      |
++----+---------+--------+--------+------------+---------+------------+
+|  1 | simran  | F      |  40000 |            |         | 2002-01-12 |
+|  2 | kalyan  | M      |  34000 |            |         | 1997-07-19 |
+|  3 | bhargav | M      |  64000 |            |         | 2007-07-19 |
++----+---------+--------+--------+------------+---------+------------+
+3 rows in set (0.00 sec)
+
+mysql> update employee_payroll set department ='teacher' where name = 'simran';
+Query OK, 1 row affected (0.10 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql> update employee_payroll set department ='software' where name = 'bhargav';
+Query OK, 1 row affected (0.17 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql> update employee_payroll set department ='business' where name = 'kalyan';
+Query OK, 1 row affected (0.08 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql> select * from employee_payroll;
++----+---------+--------+--------+------------+---------+------------+
+| id | name    | gender | salary | department | Address | start      |
++----+---------+--------+--------+------------+---------+------------+
+|  1 | simran  | F      |  40000 | teacher    |         | 2002-01-12 |
+|  2 | kalyan  | M      |  34000 | business   |         | 1997-07-19 |
+|  3 | bhargav | M      |  64000 | software   |         | 2007-07-19 |
++----+---------+--------+--------+------------+---------+------------+
+3 rows in set (0.00 sec)
+
+mysql> update employee_payroll set Address ='Andhrapradesh' where name = 'simran';
+Query OK, 1 row affected (0.08 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql> update employee_payroll set Address ='Mysore' where name = 'bhargav';
+Query OK, 1 row affected (0.08 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql> update employee_payroll set Address ='Andhrapradesh' where name = 'kalyan';
+Query OK, 1 row affected (0.07 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql> select * from employee_payroll;
++----+---------+--------+--------+------------+---------------+------------+
+| id | name    | gender | salary | department | Address       | start      |
++----+---------+--------+--------+------------+---------------+------------+
+|  1 | simran  | F      |  40000 | teacher    | Andhrapradesh | 2002-01-12 |
+|  2 | kalyan  | M      |  34000 | business   | Andhrapradesh | 1997-07-19 |
+|  3 | bhargav | M      |  64000 | software   | Mysore        | 2007-07-19 |
++----+---------+--------+--------+------------+---------------+------------+
+3 rows in set (0.00 sec)
+
+mysql>  alter table employee_payroll add basicpay double not null after salary;
+Query OK, 0 rows affected (1.68 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> alter table employee_payroll add incometax double not null after basicpay;
+Query OK, 0 rows affected (1.58 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> alter table employee_payroll add netpay double not null after incometax;
+Query OK, 0 rows affected (2.42 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> alter table employee_payroll add taxablepay double not null after netpay;
+Query OK, 0 rows affected (1.91 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> alter table employee_payroll add deductions double not null after taxablepay;
+Query OK, 0 rows affected (1.72 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> select * from employee_payroll;
++----+---------+--------+--------+----------+-----------+--------+------------+------------+------------+---------------+------------+
+| id | name    | gender | salary | basicpay | incometax | netpay | taxablepay | deductions | department | Address       | start      |
++----+---------+--------+--------+----------+-----------+--------+------------+------------+------------+---------------+------------+
+|  1 | simran  | F      |  40000 |        0 |         0 |      0 |          0 |          0 | teacher    | Andhrapradesh | 2002-01-12 |
+|  2 | kalyan  | M      |  34000 |        0 |         0 |      0 |          0 |          0 | business   | Andhrapradesh | 1997-07-19 |
+|  3 | bhargav | M      |  64000 |        0 |         0 |      0 |          0 |          0 | software   | Mysore        | 2007-07-19 |
++----+---------+--------+--------+----------+-----------+--------+------------+------------+------------+---------------+------------+
+3 rows in set (0.00 sec)
+
+mysql>  update employee_payroll set  incometax = 3000 where name ='simran';
+Query OK, 1 row affected (0.10 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql>  update employee_payroll set  incometax = 2000 where name ='kalyan';
+Query OK, 1 row affected (0.07 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql>  update employee_payroll set  incometax = 5000 where name ='bhargav';
+Query OK, 1 row affected (0.07 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql> select * from employee_payroll;
++----+---------+--------+--------+----------+-----------+--------+------------+------------+------------+---------------+------------+
+| id | name    | gender | salary | basicpay | incometax | netpay | taxablepay | deductions | department | Address       | start      |
++----+---------+--------+--------+----------+-----------+--------+------------+------------+------------+---------------+------------+
+|  1 | simran  | F      |  40000 |        0 |      3000 |      0 |          0 |          0 | teacher    | Andhrapradesh | 2002-01-12 |
+|  2 | kalyan  | M      |  34000 |        0 |      2000 |      0 |          0 |          0 | business   | Andhrapradesh | 1997-07-19 |
+|  3 | bhargav | M      |  64000 |        0 |      5000 |      0 |          0 |          0 | software   | Mysore        | 2007-07-19 |
++----+---------+--------+--------+----------+-----------+--------+------------+------------+------------+---------------+------------+
+3 rows in set (0.00 sec)
